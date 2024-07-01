@@ -20,14 +20,12 @@ object PluginMain: Plugin {
                     // 判断是否已开启
                     if (PluginMain.config["group.timedNotifications.${group.id}"] == true){
                         // 发起通知
-                        if (group.id == 787049553L || group.id == 726324810L){
-                            group.sendMessage(bot.externalResource(
-                                ImageBuilder.chatRankImage(
-                                    "今日水群排行榜",
-                                    group,
-                                    RecordManager.getGroupTodayMessageTime(group.id).take(10)).inputStream()
-                            ).uploadAsImage())
-                        }
+                        group.sendMessage(bot.externalResource(
+                            ImageBuilder.chatRankImage(
+                                "今日水群排行榜",
+                                group,
+                                RecordManager.getGroupTodayMessageTime(group.id).take(10)).inputStream()
+                        ).uploadAsImage())
                     }
                 }
             }
