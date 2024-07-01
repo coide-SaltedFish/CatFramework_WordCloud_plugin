@@ -1,0 +1,17 @@
+plugin:
+  name: "猫猫词云插件"
+  description: "生成聊天词云"
+  author: "一直大猫条"
+
+  mainClass: "org.sereinfish.catcat.framework.word.cloud.PluginMain"
+  event:
+    scanPackage: "org.sereinfish.catcat.framework.word.cloud.event"
+dependencies:
+  implementations:
+    - "com.kennycason:kumo-core:1.28"
+    - "com.kennycason:kumo-tokenizers:1.28"
+  plugins:
+    - "org.catcat.sereinfish.qqbot.universal.abstraction.layer"
+    - "org.sereinfish.catcat.framework.eventhandler.extend"
+    - "org.sereinfish.catcat.framework.playwright"
+    - "org.sereinfish.catcat.framework.qq.group.chat.statistic"

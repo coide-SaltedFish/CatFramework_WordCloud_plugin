@@ -1,0 +1,89 @@
+* {
+    box-sizing: border-box;
+}
+
+.draw_block {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+}
+
+.rank_title {
+    width: 100%;
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.rank_item {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+
+    background-image: linear-gradient(to left, rgb(255, 255, 255), rgba(180, 180, 180, 0.5)), url('https://i2.hdslb.com/bfs/face/cedeebca6ad1021ba13f18f543a1c1ac9e150e72.jpg');
+    background-blend-mode: screen;
+    background-size: 60% auto, 60% auto;
+    background-position: left center, left center;
+    background-repeat: no-repeat;
+}
+
+.rank_item:not(:last-child) {
+    margin-bottom: 15px;
+}
+
+.sender_face {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 10px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+}
+
+.sender_info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sender_name {
+    font-size: 1.3em;
+    margin: 2px;
+}
+
+.chat_info {
+    display: flex;
+    flex-direction: row;
+    margin: 3px;
+}
+
+.chat_count {
+    margin-right: 8px;
+}
+
+.desc_text {
+    font-size: 0.8em;
+    color: #484848;
+}
+
+.rank_index {
+    width: 50px;
+    height: 50px;
+    font-size: 1.7em;
+    font-weight: bold;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 50%;
+    color: white;
+    text-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.chat_time {
+    font-size: 1.6em;
+    margin-right: 20px;
+    white-space: nowrap;
+}
