@@ -81,14 +81,14 @@ object ImageBuilder {
                 .setContentType("application/json")
                 .setBody(ChatRankData(title, data.map {
                     val name = group.members[it.sender]?.cardNameOrRemarkNameOrNickName ?: it.sender.toString()
-                    ChatRankData.ItemData(it.sender, name, "消息数：${it.messages.size} 条", it.time.toTimeText())
+                    ChatRankData.ItemData(it.sender.encodeToString(), name, "消息数：${it.messages.size} 条", it.time.toTimeText())
                 }).toJson())
             )
         }
         route("**/api/sender/face/**.jpg") { route ->
             try {
-                val id = route.request().url().substringAfter("api/sender/face/").substringBefore(".").toLong()
-                group.members[id]?.queryFaceImage()
+                val id = route.request().url().substringAfter("api/sender/face/").substringBefore(".")
+                group.members[group.bot.decodeContactId(id)]?.queryFaceImage()
             }finally {
                 ImageBuilder::class.java.classLoader.getResourceAsStream("html/image/headimg_dl.png")?.readBytes()
             }?.let { imageByteArray ->

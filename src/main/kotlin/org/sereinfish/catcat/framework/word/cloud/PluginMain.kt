@@ -24,7 +24,7 @@ object PluginMain: Plugin {
                             ImageBuilder.chatRankImage(
                                 "今日水群排行榜",
                                 group,
-                                RecordManager.getGroupTodayMessageTime(group.id).take(10)).inputStream()
+                                RecordManager.getGroupTodayMessageTime(bot, group.id).take(10)).inputStream()
                         ).uploadAsImage())
                     }
                 }

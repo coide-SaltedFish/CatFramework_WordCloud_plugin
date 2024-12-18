@@ -5,7 +5,7 @@ data class ChatRankData(
     val list: List<ItemData>
 ){
     data class ItemData(
-        val senderId: Long,
+        val senderId: String,
         val senderName: String,
         val chatCount: String,
         val chatTime: String,

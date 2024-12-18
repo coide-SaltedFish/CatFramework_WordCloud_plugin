@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 `;
                 document.head.appendChild(style);
             })
-
             document.querySelectorAll(".rank_index").forEach((item) => {
                 item.style.backgroundColor = getRandomColor(100);
             })

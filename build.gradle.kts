@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.sereinfish.catcat.frame:CatFrame:0.0.197")
+    implementation("org.sereinfish.catcat.frame:CatFrame:0.0.204")
     implementation("org.slf4j:slf4j-api:2.0.12")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")

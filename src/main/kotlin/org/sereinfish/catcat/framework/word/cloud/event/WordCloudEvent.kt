@@ -6,6 +6,7 @@ import org.catcat.sereinfish.qqbot.universal.abstraction.layer.events.message.Me
 import org.catcat.sereinfish.qqbot.universal.abstraction.layer.message.Message
 import org.catcat.sereinfish.qqbot.universal.abstraction.layer.message.MessageContent
 import org.catcat.sereinfish.qqbot.universal.abstraction.layer.message.element.At
+import org.catcat.sereinfish.qqbot.universal.abstraction.layer.message.element.PlantText
 import org.catcat.sereinfish.qqbot.universal.abstraction.layer.message.router.MessageRouterBuilder
 import org.catcat.sereinfish.qqbot.universal.abstraction.layer.message.router.extend.*
 import org.sereinfish.cat.frame.context.property.value
@@ -40,18 +41,13 @@ class WordCloudEvent: CatEvent {
     }) {
         logger.info("尝试生成[$sender]今天在群[$group]的聊天词云")
 
-        val records = RecordManager.find(MessageRecord.RecordType.GROUP, sender = sender.id, groupId = group.id, getTodayStartTime())
+        val records = RecordManager.find(MessageRecord.RecordType.GROUP, bot.id, sender = sender.id, groupId = group.id, getTodayStartTime())
         val messageText = buildString {
             records.forEach {
-                JsonParser.parseString(it.message).asJsonArray.forEach {
-                    when(it.asJsonObject.get("type").asString){
-                        "text" -> append(it.asJsonObject.get("data").asJsonObject.get("text").asString)
-                        "at" -> {
-                            val id = it.asJsonObject.get("data").asJsonObject.get("qq").asLong
-                            group.members[id]?.let {
-                                append("@${it.cardNameOrRemarkNameOrNickName}")
-                            } ?: append("@${id}")
-                        }
+                bot.deserializeFromJson(it.message).forEach {
+                    when(it) {
+                        is PlantText -> append(it.text)
+                        is At -> append("@${group.members[it.target] ?: it.target}")
                     }
                 }
             }
@@ -68,7 +64,7 @@ class WordCloudEvent: CatEvent {
 
     @CatEvent.Handler
     fun wordCloudTest() = buildEventHandler<GroupMessageEvent>(builder = {
-        filter { event.sender.id == 768856606L }
+        filter { event.sender.id == event.bot.decodeContactId("768856606") }
         router {
             + optional {
                 + at(it.bot) + spaces()
@@ -84,13 +80,11 @@ class WordCloudEvent: CatEvent {
 
         logger.info("尝试生成[${group.members[at.target]}]今天在群[$group]的聊天词云")
 
-        val records = RecordManager.find(MessageRecord.RecordType.GROUP, sender = at.target, groupId = group.id, getTodayStartTime())
+        val records = RecordManager.find(MessageRecord.RecordType.GROUP, bot = bot.id, sender = at.target, groupId = group.id, getTodayStartTime())
         val messageText = buildString {
             records.forEach {
-                JsonParser.parseString(it.message).asJsonArray.forEach {
-                    if (it.asJsonObject.get("type").asString == "text") {
-                        append(it.asJsonObject.get("data").asJsonObject.get("text").asString)
-                    }
+                bot.deserializeFromJson(it.message).filterIsInstance<PlantText>().forEach {
+                    append(it.text)
                 }
             }
         }
@@ -118,7 +112,7 @@ class WordCloudEvent: CatEvent {
             ImageBuilder.chatRankImage(
                 "今日水群排行榜",
                 group,
-                RecordManager.getGroupTodayMessageTime(group.id).take(10)).inputStream()
+                RecordManager.getGroupTodayMessageTime(bot, group.id).take(10)).inputStream()
         ).uploadAsImage())
     }
 
@@ -139,7 +133,7 @@ class WordCloudEvent: CatEvent {
             ImageBuilder.chatRankImage(
                 "昨日水群排行榜",
                 group,
-                RecordManager.getGroupMessageStatic(group.id, time).take(10)
+                RecordManager.getGroupMessageStatic(bot, group.id, time).take(10)
             ).inputStream()
         ).uploadAsImage())
     }
